@@ -1,0 +1,15 @@
+#Web Server
+flask
+
+#Markdown
+markdown
+
+#ORM Lightweight
+peewee
+
+#Parse HTML, Social Links
+beautifulsoup
+micawber
+
+#Parse Code
+pygments
