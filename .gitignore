@@ -1,2 +1,5 @@
 *.db
-*.log
+*.pyc
+*.egg-info
+build
+dist

@@ -8,7 +8,7 @@ markdown
 peewee
 
 #Parse HTML, Social Links
-beautifulsoup
+beautifulsoup4
 micawber
 
 #Parse Code

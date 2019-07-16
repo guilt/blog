@@ -1,37 +1,51 @@
-# blog
+mblog: A minimal markdown blog
+==============================
 
-A *markdown* based minimal blog written in Flask. 
+A simple Markdown based blog that you can use everyday.
 
-## Running It
+Main Features
+=============
+
+-   Very usable
+-   Customizable
+
+Usage
+=====
 
 ```bash
-$ pip install -r requirements.txt && ./blog
+pip install mblog && mblog
 ```
 
-Open [Login](http://localhost:5000/login/) page.
+Now open the Login page at <http://localhost:5000/login>
 
 The password is `Password` by default.
 
-## Modifications
+Modifications
+=============
 
-The original can be found at: [Peewee](https://github.com/coleifer/peewee)
+The original version of this can be found at
+<https://github.com/coleifer/peewee>
 
-It is customized for adding File upload, Password hashing, Better error handling and Custom CSS/Branding.
+It has been customized for adding File Uploads, Password Hashing, Better
+Error Handling, Custom Branding, complete with Python2 and Python3
+Portability.
 
-It also allows you to change the Bind Host and Port.
+Technical
+=========
 
-## Technical
+It is Single-user software. You have control over your data. It
+persists data to `~/.${USER}-blog.db`, uploads files to
+`~/.${USER}-blog-uploads`.
 
-It is meant to be a single tenant software. The user running it is responsible for their data.
-
-It persists data to `~/.${USER}-blog.db` and uploads files to `~/.${USER}-blog-uploads/`
-
-Authenticate via `~/.${USER}-blog.pass` file or `${PASSWORD_HASH}` variable. Passwords are obtained by:
+It allows you to authenticate via the `PASWORD_HASH` variable or the
+contents of `~/.${USER}-blog.pass`. Passwords are obtained by:
 
 ```bash
 $ echo -n Password | openssl dgst -binary -sha256 | base64
 ```
 
-## Questions?
+Questions?
+==========
 
-Reach out to Karthik Kumar Viswanathan *karthikkumar at gmail dot com* if you have anything to say about it.
+Reach out to *Karthik Kumar Viswanathan* `karthikkumar at gmail dot com`
+for any suggestions, feedback. PRs welcome.

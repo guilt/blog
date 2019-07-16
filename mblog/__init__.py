@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+"""
+mblog: a minimal markdown blog
+"""
 # pylint: disable=W
 # pylint: disable=missing-docstring
 
@@ -42,14 +44,21 @@ PORT = int(os.environ.get('PORT') or '5000')
 USER = os.environ.get('USER') or 'user'
 
 # Default: base64(sha2('Password'))
-try:
-   with open(os.path.expanduser('~/.{}-blog.pass'.format(USER))) as passwordFile:
-       ADMIN_PASSWORD_HASH = passwordFile.read().strip()
-except:
+ADMIN_PASSWORD_FILE=os.path.expanduser('~/.{}-blog.pass'.format(USER))
+if os.path.exists(ADMIN_PASSWORD_FILE):
+   ADMIN_PASSWORD_HASH= open(ADMIN_PASSWORD_FILE).read().strip()
+else:
    ADMIN_PASSWORD_HASH = os.environ.get('PASSWORD_HASH') or \
    '588+9PF8OZmpTyxvYS6KiI5bECaHjk4ZOYsjvTjsIho='
+
 APP_DIR = os.path.dirname(os.path.realpath(__file__))
-APP_README = open(os.path.join(APP_DIR, 'README.md'), 'r').read()
+
+# Default: ../README.md
+APP_README_FILE = os.path.join(os.path.dirname(APP_DIR), 'README.md')
+if os.path.exists(APP_README_FILE):
+    APP_README = open(APP_README_FILE).read()
+else:
+    APP_README = 'Please see README.md'
 
 # The playhouse.flask_utils.FlaskDB object accepts database URL configuration.
 DATABASE_DIR = os.environ.get('DATABASE_DIR') or os.path.expanduser('~')
@@ -194,7 +203,7 @@ def login():
         # TODO: If using a one-way hash, you would also hash the
         # user-submitted password and do the comparison on the
         # hashed versions.
-        hashed = base64.b64encode(hashlib.sha256(password).digest())
+        hashed = base64.b64encode(hashlib.sha256(password.encode()).digest()).decode()
         if hashed == app.config['ADMIN_PASSWORD_HASH']:
             session['logged_in'] = True
             session.permanent = True  # Use cookie to store session.
@@ -202,7 +211,7 @@ def login():
             return redirect(next_url or url_for('index'))
         else:
             flash('Incorrect password.', 'danger')
-    return render_template('login.html', next_url=next_url)
+    return render_template('login.html', next_url=next_url, user=USER)
 
 
 @app.route('/logout/', methods=['GET', 'POST'])
@@ -210,7 +219,7 @@ def logout():
     if request.method == 'POST':
         session.clear()
         return redirect(url_for('login'))
-    return render_template('logout.html')
+    return render_template('logout.html', user=USER)
 
 
 @app.route('/')
@@ -229,7 +238,8 @@ def index():
         'index.html',
         query,
         search=search_query,
-        check_bounds=False)
+        check_bounds=False,
+        user=USER)
 
 
 def _delete(entry, template):
@@ -240,7 +250,7 @@ def _delete(entry, template):
         flash('Error: Unable to delete entry.', 'danger')
     else:
         flash('Entry deleted successfully.', 'success')
-    return render_template(template, entry=entry)
+    return render_template(template, entry=entry, user=USER)
 
 
 def _create_or_edit(entry, template):
@@ -264,7 +274,7 @@ def _create_or_edit(entry, template):
                     return redirect(url_for('detail', slug=entry.slug))
                 return redirect(url_for('edit', slug=entry.slug))
 
-    return render_template(template, entry=entry)
+    return render_template(template, entry=entry, user=USER)
 
 
 def _upload(template):
@@ -286,7 +296,7 @@ def _upload(template):
         except:
             flash('Unable to save file. Please try again.', 'danger')
 
-    return render_template(template)
+    return render_template(template, user=USER)
 
 
 @app.route('/upload/', methods=['GET', 'POST'])
@@ -313,7 +323,7 @@ def create():
 @login_required
 def drafts():
     query = Entry.drafts().order_by(Entry.timestamp.desc())
-    return object_list('index.html', query, check_bounds=False)
+    return object_list('index.html', query, check_bounds=False, user=USER)
 
 
 @app.route('/<slug>/')
@@ -326,7 +336,7 @@ def detail(slug):
         entry = Entry(title='README', content=APP_README, slug=slug)
     else:
         entry = get_object_or_404(query, Entry.slug == slug)
-    return render_template('detail.html', entry=entry)
+    return render_template('detail.html', entry=entry, user=USER)
 
 
 @app.route('/<slug>/edit/', methods=['GET', 'POST'])
@@ -360,18 +370,14 @@ def clean_querystring(request_args, *keys_to_remove, **new_values):
 
 @app.errorhandler(404)
 def not_found(exc):
-    return render_template('notfound.html'), 404
+    return render_template('notfound.html', user=USER), 404
 
 
 @app.errorhandler(500)
 def error(exc):
-    return render_template('error.html'), 500
+    return render_template('error.html', user=USER), 500
 
 
-def main():
+def start_blog():
     database.create_tables([Entry, FTSEntry], safe=True)
     app.run(debug=DEBUG, host=HOST, port=PORT)
-
-
-if __name__ == '__main__':
-    main()
