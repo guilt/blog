@@ -3,7 +3,7 @@ mblog: a minimal markdown blog
 """
 from setuptools import setup, find_packages
 
-VERSION = '1.4'
+VERSION = '1.4.1'
 
 def get_requirements():
     with open('requirements.txt') as requirements:

@@ -13,7 +13,7 @@
 </h3>
 <p>Created {{ entry.timestamp.strftime('%m/%d/%Y at %I:%M%p') }}</p>
 {% else %}
-<p>No entries have been created yet. See the <a href="/README">Help</a> section on how to get started.</p>
+<p>No entries were found. See the <a href="/README">Help</a> section if you need to add an entry.</p>
 {% endfor %}
 {% include "includes/pagination.html" %}
 {% endblock %}
