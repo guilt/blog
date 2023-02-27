@@ -4,5 +4,8 @@ mblog: a minimal markdown blog
 """
 from mblog import startBlog
 
-if __name__ == '__main__':
+def main():
     startBlog()
+
+if __name__ == '__main__':
+    main()

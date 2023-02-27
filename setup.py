@@ -3,7 +3,7 @@ mblog: a minimal markdown blog
 """
 from setuptools import setup, find_packages
 
-VERSION = '1.3'
+VERSION = '1.4'
 
 def get_requirements():
     with open('requirements.txt') as requirements:
@@ -23,14 +23,13 @@ setup(name='mblog',
       long_description=get_readme(),
       long_description_content_type='text/markdown',
       classifiers=['Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Content Management System'],
-      keywords='blog markdown flask minimal',
+      keywords='blog markdown flask minimal mblog',
       author='Karthik Kumar Viswanathan',
       author_email='karthikkumar@gmail.com',
       url='https://github.com/guilt/mblog',
-      license='BSD',
+      license='MIT',
       packages=find_packages(exclude=['ez_setup', 'examples', 'examples.*', 'tests']),
       include_package_data=True,
       zip_safe=False,
-      scripts=['scripts/mblog'],
       install_requires=list(get_requirements()),
      )
