@@ -5,15 +5,15 @@
 {% block content_title %}{% if search %}Search "{{ search }}"{% else %}Blog entries{% endif %}{% endblock %}
 
 {% block content %}
-  {% for entry in object_list %}
-    <h3>
-      <a href="{% if entry.published %}{{ url_for('detail', slug=entry.slug) }}{% else %}{{ url_for('edit', slug=entry.slug) }}{% endif %}">
+{% for entry in object_list %}
+<h3>
+    <a href="{% if entry.published %}{{ url_for('detail', slug=entry.slug) }}{% else %}{{ url_for('edit', slug=entry.slug) }}{% endif %}">
         {{ entry.title }}
-      </a>
-    </h3>
-    <p>Created {{ entry.timestamp.strftime('%m/%d/%Y at %I:%M%p') }}</p>
-  {% else %}
-    <p>No entries have been created yet.</p>
-  {% endfor %}
-  {% include "includes/pagination.html" %}
+    </a>
+</h3>
+<p>Created {{ entry.timestamp.strftime('%m/%d/%Y at %I:%M%p') }}</p>
+{% else %}
+<p>No entries have been created yet. See the <a href="/README">Help</a> section on how to get started.</p>
+{% endfor %}
+{% include "includes/pagination.html" %}
 {% endblock %}

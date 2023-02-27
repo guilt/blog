@@ -3,3 +3,4 @@ include LICENSE
 include README.md
 recursive-include mblog/static *
 recursive-include mblog/templates *
+include mblog/README.md

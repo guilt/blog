@@ -2,7 +2,7 @@
 """
 mblog: a minimal markdown blog
 """
-from mblog import start_blog
+from mblog import startBlog
 
 if __name__ == '__main__':
-    start_blog()
+    startBlog()
