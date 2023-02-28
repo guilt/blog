@@ -1,6 +1,13 @@
 import os
 
 
+def getUserName():
+    osName = os.name.lower()
+    if osName == 'nt' or 'win' in osName:
+        return os.getenv("USERNAME", "user")
+    else:
+        return os.getenv("USER", "user")
+
 def getFullUserName():
     osName = os.name.lower()
     if osName == 'nt' or 'win' in osName:
@@ -14,9 +21,9 @@ def getFullUserName():
 
         displayNameBuffer = ctypes.create_unicode_buffer(size.contents.value)
         GetUserNameExW(nameDisplay, displayNameBuffer, size)
-        return displayNameBuffer.value
+        return displayNameBuffer.value or getUserName()
     else:
         import pwd
 
         unixDisplayName = ( entry[4] for entry in pwd.getpwall() if entry[2] == os.geteuid() )
-        return unixDisplayName.__next__()
+        return unixDisplayName.__next__() or getUserName()

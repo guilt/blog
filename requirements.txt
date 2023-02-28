@@ -1,5 +1,6 @@
 #Web Server
 flask
+waitress
 
 #Markdown
 markdown
@@ -20,4 +21,3 @@ pygments
 
 #Compatibility
 six
-

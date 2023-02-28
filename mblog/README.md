@@ -8,15 +8,36 @@ A simple Markdown based blog that you can use every day.
 - Customizable
 - Simple to run
 
-## Usage
+## Installation
+
+This should be fairly easy to install, if you have **Python**
+installed.
 
 ```shell
 $ pip install mblog
+```
+## Usage
+
+You should be generally able to start it with:
+
+```shell
 $ mblog
 ```
 
-It launches on port **5000** and typically tries to bind on all IP addresses (`0.0.0.0`).
-Usually, in a typical install, it can be accessed at http://localhost:5000. Use the [Login](/login)
+and in case that does not work, as:
+
+```shell
+python -m mblog
+```
+
+In some cases, your `python` could be named `python3`, so try:
+
+```shell
+python3 -m mblog
+```
+
+It launches as a web server running on port **5000** and tries to bind on all IP addresses (`0.0.0.0`).
+In a typical install, you should be able to open http://localhost:5000 in your browser. Use the [Login](/login)
 link to sign in. The default password is `Password`. You should change it by following the directions
 below.
 

@@ -8,28 +8,28 @@ from micawber import bootstrap_basic
 from micawber.cache import Cache as OEmbedCache
 from playhouse.flask_utils import FlaskDB
 
-from mblog.util import getFullUserName
+from mblog.util import getUserName, getFullUserName
 
 # Blog configuration values.
-DEFAULT_HOST = '0.0.0.0'
+DEFAULT_HOST_IP = '0.0.0.0'
 try:
-    HOST = socket.gethostbyname(os.environ.get('HOST', DEFAULT_HOST))
+    HOST = socket.gethostname() or 'localhost'
+    IP = socket.gethostbyname(os.environ.get('HOST', DEFAULT_HOST_IP))
 except:
-    HOST = DEFAULT_HOST
+    IP = DEFAULT_HOST_IP
 
 PORT = int(os.environ.get('PORT', '5000'))
+THREADS = int(os.environ.get('THREADS', '12'))
+
+USER = getUserName()
+USERNAME = getFullUserName() or USER
 
 # You may consider using a one-way hash to generate the password, and then
 # use the hash again in the login view to perform the comparison. This is just
 # for simplicity.
-USER = os.environ.get('USER', 'user')
-try:
-    USERNAME = getFullUserName()
-except:
-    USERNAME = USER
-
-# Default: base64(sha2('Password'))
-ADMIN_PASSWORD_HASH = os.environ.get('PASSWORD_HASH', '588+9PF8OZmpTyxvYS6KiI5bECaHjk4ZOYsjvTjsIho=')  # 'Password'
+#
+# Default Password is 'Password', base64(sha2('Password')) is below.
+ADMIN_PASSWORD_HASH = os.environ.get('PASSWORD_HASH', '588+9PF8OZmpTyxvYS6KiI5bECaHjk4ZOYsjvTjsIho=')
 
 APP_DIR = os.path.dirname(os.path.realpath(__file__))
 TEMPLATES_DIR = os.path.join(APP_DIR, 'templates')
@@ -59,8 +59,8 @@ SECRET_KEY = os.environ.get('COOKIE_SECRET') or 'shhh, secret!'
 # embedded objects with maxwidth=800.
 SITE_WIDTH = 400
 
-# Debug parameters
-DEBUG = False
+# Debug Parameters
+DEBUG = bool(os.environ.get('DEBUG', 'False'))
 
 # Create a Flask WSGI app and configure it using values from the module.
 app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=STATIC_DIR)
