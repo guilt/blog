@@ -81,4 +81,4 @@ Now Enjoy!
 
 * Author: Karthik Kumar Viswanathan
 * Web   : https://karthikkumar.org
-  * Email : karthikkumar@gmail.com
+* Email : karthikkumar@gmail.com

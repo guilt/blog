@@ -3,11 +3,14 @@ mblog: a minimal markdown blog
 """
 from __future__ import print_function
 
+__VERSION__ = '1.6.0'
+
 # pylint: disable=W
 # pylint: disable=missing-docstring
 try:
 
     import logging
+    import multiprocessing as mp
     import sys
     import webbrowser
 
@@ -27,18 +30,25 @@ except ImportError as importError:
     exit(1)
 
 
+def startBrowser():
+    def __startBrowserIntl():
+        try:
+            hostUrl = "http://{}:{}/".format(HOST, PORT)
+            webbrowser.open(hostUrl, new=2)
+        except:
+            pass
+
+    browserProcess = mp.Process(target=__startBrowserIntl)
+    browserProcess.daemon = True
+    browserProcess.start()
+
+
 def startBlog():
     database.create_tables([Entry], safe=True)
     if DATABASE_NEEDS_FTS:
         database.create_tables([FTSEntry], safe=True)
 
     logging.basicConfig(level=logging.INFO)
-
-    try:
-        hostUrl = "http://{}:{}/".format(HOST, PORT)
-        webbrowser.open(hostUrl, new=2)
-    except:
-        pass
 
     try:
         if not DEBUG:
