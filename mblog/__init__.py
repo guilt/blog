@@ -3,7 +3,7 @@ mblog: a minimal markdown blog
 """
 from __future__ import print_function
 
-__VERSION__ = '1.6.0'
+__VERSION__ = '1.7.0'
 
 # pylint: disable=W
 # pylint: disable=missing-docstring
