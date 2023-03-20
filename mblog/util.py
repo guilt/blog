@@ -1,5 +1,5 @@
 import os
-
+import multiprocessing as mp
 
 def getUserName():
     osName = os.name.lower()
@@ -27,3 +27,19 @@ def getFullUserName():
 
         unixDisplayName = ( entry[4] for entry in pwd.getpwall() if entry[2] == os.geteuid() )
         return unixDisplayName.__next__() or getUserName()
+
+def startBrowser(hostUrl):
+    def __startBrowserIntl(hostUrl):
+        try:
+            import webbrowser
+            webbrowser.open(hostUrl, new=2)
+        except:
+            pass
+
+    osName = os.name.lower()
+    if osName == 'nt' or 'win' in osName:
+        __startBrowserIntl(hostUrl)
+    else:
+        browserProcess = mp.Process(target=__startBrowserIntl, args=(hostUrl,))
+        browserProcess.daemon = True
+        browserProcess.start()

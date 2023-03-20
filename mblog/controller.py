@@ -6,8 +6,7 @@ from flask import flash, render_template, request, redirect, url_for
 from peewee import IntegrityError
 from werkzeug.utils import secure_filename
 
-from mblog import database
-from mblog.config import USER, UPLOAD_DIR
+from mblog.config import USER, UPLOAD_DIR, database
 
 
 def deleteEntry(entry, template):

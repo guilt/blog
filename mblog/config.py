@@ -6,6 +6,7 @@ import socket
 from flask import Flask
 from micawber import bootstrap_basic
 from micawber.cache import Cache as OEmbedCache
+from micawber.contrib.mcflask import add_oembed_filters
 from playhouse.flask_utils import FlaskDB
 
 from mblog.util import getUserName, getFullUserName
@@ -19,6 +20,8 @@ except:
     IP = DEFAULT_HOST_IP
 
 PORT = int(os.environ.get('PORT', '5000'))
+URL = "http://{}:{}/".format(HOST, PORT)
+
 THREADS = int(os.environ.get('THREADS', '12'))
 
 USER = getUserName()
@@ -75,3 +78,4 @@ database = flaskDB.database
 # We'll use a simple in-memory cache so that multiple requests for the same
 # video don't require multiple network requests.
 oembedProviders = bootstrap_basic(OEmbedCache())
+add_oembed_filters(app, oembedProviders)

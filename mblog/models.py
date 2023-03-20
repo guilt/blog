@@ -11,7 +11,7 @@ from micawber import parse_html
 from peewee import TextField, CharField, SQL, BooleanField, DateTimeField
 from playhouse.sqlite_ext import FTSModel
 
-from mblog.config import DATABASE_NEEDS_FTS, oembedProviders, app, flaskDB, database
+from mblog.config import DATABASE_NEEDS_FTS, flaskDB, database, app, oembedProviders
 
 
 class Entry(flaskDB.Model):
@@ -108,3 +108,10 @@ if DATABASE_NEEDS_FTS:
 
         class Meta(object):
             database = database
+
+
+def createDatabases():
+    database.create_tables([Entry], safe=True)
+    if DATABASE_NEEDS_FTS:
+        database.create_tables([FTSEntry], safe=True)
+

@@ -10,18 +10,15 @@ __VERSION__ = '1.6.0'
 try:
 
     import logging
-    import multiprocessing as mp
     import sys
-    import webbrowser
 
     import waitress
 
-    from mblog.config import HOST, IP, PORT, THREADS, DEBUG, USER
+    from mblog.config import HOST, IP, PORT, URL, THREADS, DEBUG, USER
 
-    from mblog.config import app, database, DATABASE_NEEDS_FTS
-    from mblog.models import Entry
-    if DATABASE_NEEDS_FTS:
-        from mblog.models import FTSEntry
+    from mblog.config import app
+    from mblog.models import createDatabases
+    from mblog.util import startBrowser
     from mblog.routes import *
 
 except ImportError as importError:
@@ -30,25 +27,11 @@ except ImportError as importError:
     exit(1)
 
 
-def startBrowser():
-    def __startBrowserIntl():
-        try:
-            hostUrl = "http://{}:{}/".format(HOST, PORT)
-            webbrowser.open(hostUrl, new=2)
-        except:
-            pass
-
-    browserProcess = mp.Process(target=__startBrowserIntl)
-    browserProcess.daemon = True
-    browserProcess.start()
-
-
 def startBlog():
-    database.create_tables([Entry], safe=True)
-    if DATABASE_NEEDS_FTS:
-        database.create_tables([FTSEntry], safe=True)
-
     logging.basicConfig(level=logging.INFO)
+
+    createDatabases()
+    startBrowser(URL)
 
     try:
         if not DEBUG:
