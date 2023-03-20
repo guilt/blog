@@ -27,16 +27,19 @@ $ mblog
 and in case that does not work, as:
 
 ```shell
-python -m mblog
+$ python -m mblog
 ```
 
 In some cases, your `python` could be named `python3`, so try:
 
 ```shell
-python3 -m mblog
+$ python3 -m mblog
 ```
 
 It launches as a web server running on port **5000** and tries to bind on all IP addresses (`0.0.0.0`).
+
+You can override this behavior by manually specifying the `PORT` and `HOST` variables.
+
 In a typical install, you should be able to open http://localhost:5000 in your browser. Use the [Login](/login)
 link to sign in. The default password is `Password`. You should change it by following the directions
 below.
